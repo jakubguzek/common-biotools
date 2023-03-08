@@ -2,6 +2,8 @@
 
 gp2fasta is a CLI converter which can be used to convert gp files from NCBI GenPept or GeneBank format to fasta. Its can create fasta files with short and accurate identifiers for sequence. 
 
+Based on: [gp2fasta](https://gp2fasta.netmark.pl) Copyright (c) 2007 Łukasz Kozłowski
+
 ## Options for sequence identifier content
 Converter can include some of the metadata from gp file in sequence identifier of fasta file.
 
@@ -100,5 +102,3 @@ species:
 ## Implementation details
 
 gp2fasta is a short program written in python. All relevant functions are inside gp2fasta.py file inside src/gp2fasta. Executable gp2fasta should be used when calling the script. Exemplary data and outputs are provided in data/ and test_output/ directories. 
-
-Based on: [gp2fasta](https://gp2fasta.netmark.pl)
