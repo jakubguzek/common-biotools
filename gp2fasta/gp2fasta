@@ -1,0 +1,55 @@
+#!/usr/bin/env python
+# MIT License
+#
+# Copyright (c) 2023 Jakub J. Guzek
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+import argparse
+import pathlib
+import sys
+
+from src.gp2fasta import gp2fasta
+
+# Keep script name in global constant (for error messages).
+SCRIPT_NAME = pathlib.Path(__file__).name
+
+def main(args: argparse.Namespace) -> int:
+    input = pathlib.Path(args.gp)
+    # Print more concise error message if input file doesn't exist.
+    try:
+        data = gp2fasta.parse_gp(input)
+    except FileNotFoundError:
+            print(f"{SCRIPT_NAME}: error: [Errrno 2] No such file or directory '{input}'")
+            return 2
+    output = pathlib.Path(args.fasta)
+    # Return early with failure if output file exist and -n option was passed.
+    if output.exists() and args.no_overwrite:
+            print(f"{SCRIPT_NAME}: error: File {output} exists!")
+            return 1 
+    # Write converted data to output file.
+    with open(output, "w") as file:
+        file.write(gp2fasta.create_identifier(data, args) + "\n")
+        file.write(data.get("sequence", "null"))
+    return 0
+
+
+# Run main if script was called directly and not imported by other python module.
+if __name__ == "__main__":
+    sys.exit(main(gp2fasta.parse_args()))
