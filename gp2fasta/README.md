@@ -101,4 +101,4 @@ species:
 
 gp2fasta is a short program written in python. All relevant functions are inside gp2fasta.py file inside src/gp2fasta. Executable gp2fasta should be used when calling the script. Exemplary data and outputs are provided in data/ and test_output/ directories. 
 
-Based on: (gp2fasta)[gp2fasta.netmark.pl]
+Based on: [gp2fasta](gp2fasta.netmark.pl)
